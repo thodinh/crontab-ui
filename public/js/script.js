@@ -86,6 +86,8 @@ function editJob(_id){
 		$("#job").modal("show");
 		$("#job-name").val(job.name);
 		$("#job-command").val(job.command);
+		console.log(job);
+		// $("#job-command").val('parse.job:' + job.command);
 		// if macro not used
 		if(job.schedule.indexOf("@") !== 0){
 			var components = job.schedule.split(" ");
@@ -111,7 +113,7 @@ function editJob(_id){
 		if (!schedule) {
 			schedule = "* * * * *";
 		}
-		let name = $("#job-name").val();
+		let name = $("#job-name").val() || $('#job-command').val();
 		let mailing = JSON.parse($("#job-mailing").attr("data-json"));
 		let logging = $("#job-logging").prop("checked");
 		$.post(routes.save, {name: name, command: job_command , schedule: schedule, _id: _id, logging: logging, mailing: mailing}, function(){
@@ -140,7 +142,7 @@ function newJob(){
 		if (!schedule) {
 			schedule = "* * * * *";
 		}
-		let name = $("#job-name").val();
+		let name = $("#job-name").val() || $('#job-command').val();
 		let mailing = JSON.parse($("#job-mailing").attr("data-json"));
 		let logging = $("#job-logging").prop("checked");
 		$.post(routes.save, {name: name, command: job_command , schedule: schedule, _id: -1, logging: logging, mailing: mailing}, function(){

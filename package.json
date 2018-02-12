@@ -7,15 +7,16 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "latest",
-    "ejs": "latest",
-    "nedb": "latest",
     "body-parser": "latest",
-    "mime-types": "latest",
-    "cron-parser": "latest",
     "connect-busboy": "latest",
+    "cron-parser": "latest",
+    "ejs": "latest",
+    "express": "latest",
+    "mime-types": "latest",
     "moment": "latest",
-    "nodemailer": "latest"
+    "nedb": "latest",
+    "nodemailer": "latest",
+    "parse": "^1.11.0"
   },
   "engines": {
     "node": "latest"
@@ -26,7 +27,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/alseambusher/crontab-ui"
+    "url": "https://github.com/thodinh/parse-scheduler"
   },
   "keywords": [
     "Crontab",

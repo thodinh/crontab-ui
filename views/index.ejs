@@ -15,6 +15,7 @@
 		// initialize tooltips
 		$('[data-toggle="tooltip"]').tooltip();
 		crontabs = JSON.parse('<%- crontabs.replace(/\\\\/g, "\\\\\\\\").replace(/\\\"/g,"\\\\\"").replace(/\'/g,"\\\'").replace(/\\t/g, " ") %>');
+		// jobNames = JSON.parse('<%- jobs %>');
 		routes = JSON.parse('<%- routes %>');
 		$("#env_vars").val(`<%- env  %>`);
 	})
@@ -45,7 +46,6 @@
 		<thead>
 	<tr>
 		<th>#</th>
-		<th>Name</th>
 		<th>Job</th>
 		<th>Time</th>
 		<th>Last Modified</th>
@@ -65,16 +65,14 @@
 					<%= index %>.
 					<% index += 1 %>
 				</td>
-
 				<td>
-					<% if (crontab.name) { %>
-						<%= crontab.name %>
-						<a class="btn" data-toggle="tooltip" data-placement="right" title="<%= crontab._id %>"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> </a>
-						<% } else { %>
-							<%= crontab._id %>
+					<% if (crontab.command) { %>
+						<%= crontab.command %>
+					<% } else { %>
+						<%= crontab._id %>
 					<% } %>
+					<a class="btn" data-toggle="tooltip" data-placement="right" title="<%= crontab._id %>"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> </a>
 				</td>
-				<td><%= crontab.command %></td>
 				<td><span style="cursor:pointer" data-toggle="tooltip" data-placement="bottom" title="<%= crontab.next %>"><%= crontab.schedule %></span></td>
 				<td style="width:20%" title="<%= crontab.timestamp %>"><%= moment(new Date(crontab.timestamp)).fromNow() %></td>
 				<td>
@@ -100,19 +98,18 @@
 </div>
 <% include popup.ejs %>
 <script>
-   jQuery(function($) {
-   	$('#main_table').DataTable({
-   		order: [1, 'asc'],
-   		columns: [
-   			{orderable: false},
-   			null,
-   			null,
-   			null,
-   			{orderable: false},
-   			{orderable: false}
-   		]
-  	});
-   });
+   	jQuery(function($) {
+		$('#main_table').DataTable({
+			order: [1, 'asc'],
+			columns: [
+				{orderable: false},
+				null,
+				null,
+				{orderable: false},
+				{orderable: false}
+			]
+		});
+	});
  </script>
 </body>
 </html>

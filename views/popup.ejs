@@ -1,3 +1,6 @@
+<script>
+  jobNames = '<%- jobs %>';
+</script>
 <!-- Job -->
 <div class="modal fade" id="job">
   <div class="modal-dialog">
@@ -7,10 +10,17 @@
         <h4 class="modal-title" id="job-title">Job</h4>
       </div>
       <div class="modal-body" id="job-body">
-	<label>Name (Optional)</label>
-	<input type='text' class='form-control' id='job-name'/><br />
+	<!-- <label>Name (Optional)</label>
+	<input disabled type='text' class='form-control' id='job-name'/><br />
 	<label>Command</label>
-	<input type='text' class='form-control' id='job-command' onkeyup="job_command = $(this).val(); job_string();"/><br />
+  <input disabled type='text' class='form-control' id='job-command' onkeyup="job_command = $(this).val(); job_string();"/><br /> -->
+	<label>Parse Job</label>
+  <select name="job-command" id="job-command" class="form-control" onchange="job_command = $(this).val(); job_string();">
+    <% for(var i=0; i<jobs.length; i++) {%>
+      <option value="<%- jobs[i].key %>"><%= jobs[i].display %></li>
+    <% } %>
+  </select>
+  <br/>
 	<label>Quick Schedule</label><br />
 	<a class="btn btn-primary" onclick="schedule = '@reboot'; job_string();">Startup</a>
 	<a class="btn btn-primary" onclick="schedule = '@hourly'; job_string();">Hourly</a>

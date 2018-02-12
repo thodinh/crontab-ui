@@ -12,6 +12,8 @@ var busboy = require('connect-busboy'); // for file upload
 
 // include the routes
 var routes = require("./routes").routes;
+var request = require('request-promise');
+// Parse.initialize('Socialobe-Test-APPID', null, 'Socialobe-MSTK')
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
@@ -38,17 +40,35 @@ app.set('port', (process.env.PORT || 8000));
 
 // root page handler
 app.get(routes.root, function(req, res) {
+	var jobsRequest = request({
+		url: 'http://localhost:3778/socialobe-api/cloud_code/jobs/data',
+		method: 'GET',
+		headers: {
+			'X-Parse-Application-Id': 'Socialobe-Test-APPID',
+			'X-Parse-Master-Key': 'Socialobe-MSTK',
+			'Content-Type': 'application/json'
+		},
+		json: true
+	});
   // reload the database before rendering
 	crontab.reload_db();
 	// send all the required parameters
 	crontab.crontabs( function(docs){
-		res.render('index', {
-			routes : JSON.stringify(routes),
-			crontabs : JSON.stringify(docs),
-			backups : crontab.get_backup_names(),
-			env : crontab.get_env(),
-      moment: moment
-		});
+		jobsRequest
+			.then((result) => {
+				var jobs;
+				if (result) {
+					jobs = result.jobs;
+				}
+				res.render('index', {
+					routes : JSON.stringify(routes),
+					crontabs : JSON.stringify(docs),
+					backups : crontab.get_backup_names(),
+					env : crontab.get_env(),
+					moment: moment,
+					jobs: jobs.map((job) => { return { key: 'parse:' + job, display: job}; })
+				});
+			});
 	});
 });
 
